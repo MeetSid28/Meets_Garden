@@ -70,8 +70,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <button type="submit" class="btn btn-primary w-100">
-                                        <i class="fas fa-seedling"></i>
+                                    <button type="submit" class="btn btn-primary w-100 btn-bounce watering-can">
+                                        <i class="fas fa-seedling"></i> Plant
                                     </button>
                                 </div>
                             </div>
@@ -93,9 +93,9 @@
                                     <div class="d-flex align-items-start">
                                         <div class="task-icon me-3">
                                             {% if task.flower_type == 'rose' %}
-                                                🌹
+                                                <span class="growing-flower">🌹</span>
                                             {% else %}
-                                                🌷
+                                                <span class="growing-flower">🌷</span>
                                             {% endif %}
                                         </div>
                                         
@@ -118,8 +118,8 @@
                                         
                                         <div class="task-actions">
                                             {% if not task.completed %}
-                                                <a href="{{ url_for('complete_task', task_id=task.id) }}" class="btn btn-success btn-sm complete-btn">
-                                                    <i class="fas fa-check"></i>
+                                                <a href="{{ url_for('complete_task', task_id=task.id) }}" class="btn btn-success btn-sm complete-btn btn-bounce">
+                                                    <i class="fas fa-check"></i> Bloom
                                                 </a>
                                             {% endif %}
                                             <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-outline-danger btn-sm">
@@ -158,12 +158,12 @@
                         <div class="streak-flowers mt-3">
                             {% if recent_logins %}
                                 {% for login in recent_logins[:5] %}
-                                    <span class="streak-flower">
+                                    <span class="streak-flower growing-flower">
                                         {% if login.flower_grown == 'rose' %}🌹{% else %}🌷{% endif %}
                                     </span>
                                 {% endfor %}
                             {% else %}
-                                <span class="text-muted">Start your streak! 🌱</span>
+                                <span class="text-muted">Start your streak! <span class="growing-flower">🌱</span></span>
                             {% endif %}
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 // Main JavaScript functionality for Mist garden app
 
 // Global variables
-let audioContext;
+let mainAudioContext;
 let isAudioInitialized = false;
 
 // Initialize the garden when DOM is loaded
@@ -304,7 +304,7 @@ function initializeAudio() {
     document.addEventListener('click', function initAudio() {
         if (!isAudioInitialized) {
             try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                mainAudioContext = new (window.AudioContext || window.webkitAudioContext)();
                 isAudioInitialized = true;
                 document.removeEventListener('click', initAudio);
             } catch (error) {
