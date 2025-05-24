@@ -108,18 +108,28 @@ function createExplodingPetal(startX, startY, petalEmoji) {
     };
 }
 
-// Love animation (hearts floating up)
+// Love animation (enhanced hearts floating up)
 function triggerLoveAnimation() {
-    const hearts = ['💖', '💕', '💗', '💓', '💝', '💘'];
+    const hearts = ['💖', '💕', '💗', '💓', '💝', '💘', '❤️', '🧡', '💛', '💚', '💙', '💜'];
     
-    for (let i = 0; i < 10; i++) {
+    // Create burst of hearts from center
+    createHeartBurst();
+    
+    // Create floating hearts from bottom
+    for (let i = 0; i < 20; i++) {
         setTimeout(() => {
-            createFloatingHeart(hearts[i % hearts.length]);
-        }, i * 200);
+            createEnhancedFloatingHeart(hearts[i % hearts.length]);
+        }, i * 100);
     }
     
-    // Show love message
-    showLoveMessage();
+    // Create spiral hearts
+    createSpiralHearts();
+    
+    // Show love message with enhanced animation
+    showEnhancedLoveMessage();
+    
+    // Add screen sparkle effect
+    createScreenSparkles();
 }
 
 // Create floating heart
@@ -159,17 +169,250 @@ function createFloatingHeart(heartEmoji) {
     };
 }
 
-// Show love message
-function showLoveMessage() {
+// Enhanced heart burst from center
+function createHeartBurst() {
+    const hearts = ['💖', '💕', '💗', '💓', '💝', '💘'];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    for (let i = 0; i < 12; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.textContent = hearts[i % hearts.length];
+            heart.style.cssText = `
+                position: fixed;
+                left: ${centerX}px;
+                top: ${centerY}px;
+                font-size: 2.5rem;
+                pointer-events: none;
+                z-index: 9999;
+            `;
+            
+            document.body.appendChild(heart);
+            
+            const angle = (i / 12) * 2 * Math.PI;
+            const distance = 200;
+            const endX = centerX + Math.cos(angle) * distance;
+            const endY = centerY + Math.sin(angle) * distance;
+            
+            heart.animate([
+                {
+                    transform: 'translate(-50%, -50%) scale(0) rotate(0deg)',
+                    opacity: 1
+                },
+                {
+                    transform: 'translate(-50%, -50%) scale(1.5) rotate(180deg)',
+                    opacity: 1,
+                    offset: 0.3
+                },
+                {
+                    transform: `translate(${endX - centerX - 25}px, ${endY - centerY - 25}px) scale(0.8) rotate(720deg)`,
+                    opacity: 0
+                }
+            ], {
+                duration: 2000,
+                easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+            }).onfinish = () => heart.remove();
+        }, i * 80);
+    }
+}
+
+// Enhanced floating heart
+function createEnhancedFloatingHeart(heartEmoji) {
+    const heart = document.createElement('div');
+    heart.textContent = heartEmoji;
+    heart.style.cssText = `
+        position: fixed;
+        left: ${Math.random() * window.innerWidth}px;
+        bottom: -50px;
+        font-size: ${2 + Math.random()}rem;
+        pointer-events: none;
+        z-index: 9999;
+        filter: drop-shadow(2px 2px 4px rgba(255, 182, 193, 0.5));
+    `;
+    
+    document.body.appendChild(heart);
+    
+    const drift = (Math.random() - 0.5) * 200;
+    
+    heart.animate([
+        {
+            transform: 'translateY(0) translateX(0) scale(0) rotate(0deg)',
+            opacity: 0
+        },
+        {
+            transform: 'translateY(-100px) translateX(10px) scale(1) rotate(30deg)',
+            opacity: 1,
+            offset: 0.15
+        },
+        {
+            transform: `translateY(-${window.innerHeight / 2}px) translateX(${drift / 2}px) scale(1.2) rotate(180deg)`,
+            opacity: 1,
+            offset: 0.5
+        },
+        {
+            transform: `translateY(-${window.innerHeight + 100}px) translateX(${drift}px) scale(0.8) rotate(360deg)`,
+            opacity: 0
+        }
+    ], {
+        duration: 4000 + Math.random() * 2000,
+        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+    }).onfinish = () => heart.remove();
+}
+
+// Create spiral hearts
+function createSpiralHearts() {
+    const hearts = ['💖', '💕', '💗'];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    for (let i = 0; i < 15; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.textContent = hearts[i % hearts.length];
+            heart.style.cssText = `
+                position: fixed;
+                left: ${centerX}px;
+                top: ${centerY}px;
+                font-size: 1.8rem;
+                pointer-events: none;
+                z-index: 9998;
+            `;
+            
+            document.body.appendChild(heart);
+            
+            const spiralRadius = 150;
+            const spiralTurns = 3;
+            const angle = (i / 15) * spiralTurns * 2 * Math.PI;
+            const radius = spiralRadius * (i / 15);
+            
+            heart.animate([
+                {
+                    transform: 'translate(-50%, -50%) scale(0)',
+                    opacity: 0
+                },
+                {
+                    transform: `translate(${Math.cos(angle) * radius - 25}px, ${Math.sin(angle) * radius - 25}px) scale(1)`,
+                    opacity: 1
+                }
+            ], {
+                duration: 1500,
+                easing: 'ease-out',
+                fill: 'forwards'
+            });
+            
+            setTimeout(() => {
+                heart.animate([
+                    { opacity: 1 },
+                    { opacity: 0 }
+                ], {
+                    duration: 500,
+                    fill: 'forwards'
+                }).onfinish = () => heart.remove();
+            }, 2000);
+        }, i * 100);
+    }
+}
+
+// Enhanced love message
+function showEnhancedLoveMessage() {
     const messages = [
         "Love is in the air! 💕",
         "You found the love easter egg! 💖",
         "Sending virtual hugs! 🤗",
-        "Hearts are floating for you! 💗"
+        "Hearts are floating for you! 💗",
+        "The creator sends his love! 💝",
+        "You make his heart skip a beat! 💓"
     ];
     
     const message = messages[Math.floor(Math.random() * messages.length)];
-    window.MistApp.showTemporaryMessage(message, 3000);
+    
+    const messageElement = document.createElement('div');
+    messageElement.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            z-index: 10001;
+            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.6);
+            border: 3px solid white;
+            font-family: 'Dancing Script', cursive;
+        ">${message}</div>
+    `;
+    
+    document.body.appendChild(messageElement);
+    
+    messageElement.animate([
+        {
+            opacity: 0,
+            transform: 'translate(-50%, -50%) scale(0.5) rotate(-10deg)'
+        },
+        {
+            opacity: 1,
+            transform: 'translate(-50%, -50%) scale(1.1) rotate(0deg)',
+            offset: 0.3
+        },
+        {
+            opacity: 1,
+            transform: 'translate(-50%, -50%) scale(1) rotate(0deg)',
+            offset: 0.7
+        },
+        {
+            opacity: 0,
+            transform: 'translate(-50%, -50%) scale(0.8) rotate(5deg)'
+        }
+    ], {
+        duration: 3500,
+        easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+    }).onfinish = () => messageElement.remove();
+}
+
+// Screen sparkles
+function createScreenSparkles() {
+    const sparkles = ['✨', '⭐', '💫', '🌟'];
+    
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+            const sparkle = document.createElement('div');
+            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            sparkle.style.cssText = `
+                position: fixed;
+                left: ${Math.random() * window.innerWidth}px;
+                top: ${Math.random() * window.innerHeight}px;
+                font-size: ${1 + Math.random() * 0.5}rem;
+                pointer-events: none;
+                z-index: 9997;
+            `;
+            
+            document.body.appendChild(sparkle);
+            
+            sparkle.animate([
+                {
+                    opacity: 0,
+                    transform: 'scale(0) rotate(0deg)'
+                },
+                {
+                    opacity: 1,
+                    transform: 'scale(1.5) rotate(180deg)',
+                    offset: 0.5
+                },
+                {
+                    opacity: 0,
+                    transform: 'scale(0) rotate(360deg)'
+                }
+            ], {
+                duration: 2000,
+                easing: 'ease-in-out'
+            }).onfinish = () => sparkle.remove();
+        }, i * 150);
+    }
 }
 
 // Heart explosion (for hug page)

@@ -76,11 +76,139 @@ def garden():
     # Initialize achievements if none exist
     if Achievement.query.count() == 0:
         achievements = [
+            # Basic Achievements
             Achievement(name="Rose Collector", description="Complete 5 tasks", badge_icon="🌹"),
             Achievement(name="Tulip Champion", description="Complete 3 tasks quickly", badge_icon="🌷"),
             Achievement(name="Garden Master", description="Maintain a 7-day streak", badge_icon="🌺"),
             Achievement(name="Flower Millionaire", description="Earn 100 Flower Bucks", badge_icon="💰"),
-            Achievement(name="Daily Gardener", description="Login for 3 consecutive days", badge_icon="🌱")
+            Achievement(name="Daily Gardener", description="Login for 3 consecutive days", badge_icon="🌱"),
+            
+            # Milestone Achievements
+            Achievement(name="First Bloom", description="Complete your first task", badge_icon="🌸"),
+            Achievement(name="Ten Petals", description="Complete 10 tasks", badge_icon="🌻"),
+            Achievement(name="Twenty Blooms", description="Complete 20 tasks", badge_icon="🌼"),
+            Achievement(name="Fifty Flowers", description="Complete 50 tasks", badge_icon="🌺"),
+            Achievement(name="Century Garden", description="Complete 100 tasks", badge_icon="🏆"),
+            Achievement(name="Two Hundred Tasks", description="Complete 200 tasks", badge_icon="💎"),
+            Achievement(name="Three Hundred Blooms", description="Complete 300 tasks", badge_icon="👑"),
+            Achievement(name="Five Hundred Master", description="Complete 500 tasks", badge_icon="🎖️"),
+            Achievement(name="Legendary Gardener", description="Complete 1000 tasks", badge_icon="⭐"),
+            
+            # Streak Achievements
+            Achievement(name="Weekend Warrior", description="Maintain 2-day streak", badge_icon="💪"),
+            Achievement(name="Week Wonder", description="Maintain 7-day streak", badge_icon="📅"),
+            Achievement(name="Fortnight Fighter", description="Maintain 14-day streak", badge_icon="🔥"),
+            Achievement(name="Monthly Marvel", description="Maintain 30-day streak", badge_icon="📆"),
+            Achievement(name="Streak Superstar", description="Maintain 60-day streak", badge_icon="🌟"),
+            Achievement(name="Consistency Queen", description="Maintain 100-day streak", badge_icon="👸"),
+            Achievement(name="Year Long Bloomer", description="Maintain 365-day streak", badge_icon="🎊"),
+            
+            # Flower Buck Achievements
+            Achievement(name="Penny Saver", description="Earn 10 Flower Bucks", badge_icon="🪙"),
+            Achievement(name="Coin Collector", description="Earn 50 Flower Bucks", badge_icon="💰"),
+            Achievement(name="Buck Hunter", description="Earn 200 Flower Bucks", badge_icon="💸"),
+            Achievement(name="Rich Gardener", description="Earn 500 Flower Bucks", badge_icon="💎"),
+            Achievement(name="Flower Tycoon", description="Earn 1000 Flower Bucks", badge_icon="🏦"),
+            Achievement(name="Garden Billionaire", description="Earn 2000 Flower Bucks", badge_icon="💰"),
+            Achievement(name="Wealth Master", description="Earn 5000 Flower Bucks", badge_icon="🤑"),
+            
+            # Special Theme Achievements
+            Achievement(name="Rose Lover", description="Complete 10 rose tasks", badge_icon="🌹"),
+            Achievement(name="Tulip Expert", description="Complete 10 tulip tasks", badge_icon="🌷"),
+            Achievement(name="Morning Glory", description="Complete task before 9 AM", badge_icon="🌅"),
+            Achievement(name="Night Owl", description="Complete task after 10 PM", badge_icon="🦉"),
+            Achievement(name="Weekend Gardener", description="Complete task on weekend", badge_icon="🎉"),
+            Achievement(name="Productive Monday", description="Complete task on Monday", badge_icon="📝"),
+            Achievement(name="Hump Day Hero", description="Complete task on Wednesday", badge_icon="🐪"),
+            Achievement(name="Friday Finisher", description="Complete task on Friday", badge_icon="🎊"),
+            
+            # Love & Romance Achievements
+            Achievement(name="Love Finder", description="Discover the love easter egg", badge_icon="💕"),
+            Achievement(name="Heart Hunter", description="Type 'love' 5 times", badge_icon="💖"),
+            Achievement(name="Romance Expert", description="Visit hug page 3 times", badge_icon="💝"),
+            Achievement(name="Secret Keeper", description="Find all easter eggs", badge_icon="🤫"),
+            Achievement(name="Cuddle Master", description="Send 10 virtual hugs", badge_icon="🤗"),
+            Achievement(name="Sweet Talker", description="Read 20 sweet messages", badge_icon="💌"),
+            Achievement(name="Love Story", description="Use app for 7 days", badge_icon="📖"),
+            
+            # Seasonal Achievements
+            Achievement(name="Spring Awakening", description="Complete task in March", badge_icon="🌷"),
+            Achievement(name="Summer Bloomer", description="Complete task in June", badge_icon="🌻"),
+            Achievement(name="Autumn Harvester", description="Complete task in September", badge_icon="🍂"),
+            Achievement(name="Winter Wonderland", description="Complete task in December", badge_icon="❄️"),
+            Achievement(name="New Year Starter", description="Complete task in January", badge_icon="🎊"),
+            Achievement(name="Valentine Lover", description="Complete task on Feb 14", badge_icon="💘"),
+            Achievement(name="Birthday Bloomer", description="Complete task on birthday", badge_icon="🎂"),
+            
+            # Time-based Achievements
+            Achievement(name="Speed Demon", description="Complete task in under 1 minute", badge_icon="⚡"),
+            Achievement(name="Quick Bloomer", description="Complete 5 tasks in one day", badge_icon="🏃‍♀️"),
+            Achievement(name="Power Hour", description="Complete 3 tasks in one hour", badge_icon="⏰"),
+            Achievement(name="Marathon Runner", description="Complete 20 tasks in one day", badge_icon="🏃"),
+            Achievement(name="Garden Sprint", description="Complete 10 tasks in 2 hours", badge_icon="💨"),
+            
+            # Creativity Achievements
+            Achievement(name="Creative Soul", description="Add 50 custom tasks", badge_icon="🎨"),
+            Achievement(name="Task Master", description="Create task with long description", badge_icon="📝"),
+            Achievement(name="Organized Mind", description="Complete tasks in order", badge_icon="🗂️"),
+            Achievement(name="Detail Oriented", description="Add descriptions to 20 tasks", badge_icon="🔍"),
+            Achievement(name="Planner Pro", description="Create 10 tasks in advance", badge_icon="📋"),
+            
+            # Fun Achievements
+            Achievement(name="Emoji Lover", description="Use 100 flower emojis", badge_icon="😍"),
+            Achievement(name="Garden Party", description="Complete all default tasks", badge_icon="🎉"),
+            Achievement(name="Perfectionist", description="Complete 50 tasks flawlessly", badge_icon="✨"),
+            Achievement(name="Motivational Guru", description="Read all encouraging messages", badge_icon="💪"),
+            Achievement(name="Happiness Seeker", description="Find joy in small tasks", badge_icon="😊"),
+            
+            # Advanced Achievements
+            Achievement(name="Elite Gardener", description="Reach top 1% performance", badge_icon="🏅"),
+            Achievement(name="Unstoppable Force", description="Never miss a day for 30 days", badge_icon="🚀"),
+            Achievement(name="Garden Architect", description="Design perfect task layout", badge_icon="🏗️"),
+            Achievement(name="Bloom Master", description="Master all flower types", badge_icon="🎓"),
+            Achievement(name="Zen Gardener", description="Find peace in daily tasks", badge_icon="🧘‍♀️"),
+            
+            # Relationship Achievements
+            Achievement(name="Better Half", description="Complete tasks to help relationship", badge_icon="💑"),
+            Achievement(name="Support System", description="Be encouraging for 14 days", badge_icon="🤝"),
+            Achievement(name="Love Language", description="Express love through tasks", badge_icon="💬"),
+            Achievement(name="Partnership Pro", description="Balance work and love", badge_icon="⚖️"),
+            Achievement(name="Soulmate Status", description="Perfect compatibility score", badge_icon="👫"),
+            
+            # Personal Growth Achievements
+            Achievement(name="Self Improver", description="Focus on personal development", badge_icon="📈"),
+            Achievement(name="Habit Builder", description="Build 5 positive habits", badge_icon="🔧"),
+            Achievement(name="Goal Setter", description="Set and achieve 10 goals", badge_icon="🎯"),
+            Achievement(name="Dream Chaser", description="Pursue ambitious tasks", badge_icon="🌙"),
+            Achievement(name="Life Organizer", description="Organize life priorities", badge_icon="📊"),
+            
+            # Social Achievements
+            Achievement(name="Inspiration Source", description="Inspire others through tasks", badge_icon="💡"),
+            Achievement(name="Community Builder", description="Connect with others", badge_icon="🏘️"),
+            Achievement(name="Kindness Spreader", description="Do acts of kindness", badge_icon="❤️"),
+            Achievement(name="Positive Vibes", description="Maintain positive attitude", badge_icon="☀️"),
+            Achievement(name="Good Influence", description="Set positive example", badge_icon="🌟"),
+            
+            # Health & Wellness Achievements
+            Achievement(name="Wellness Warrior", description="Focus on health tasks", badge_icon="🏥"),
+            Achievement(name="Mind & Body", description="Balance mental and physical", badge_icon="🧠"),
+            Achievement(name="Self Care Pro", description="Prioritize self-care", badge_icon="🛁"),
+            Achievement(name="Energy Booster", description="Maintain high energy", badge_icon="⚡"),
+            Achievement(name="Balance Master", description="Achieve work-life balance", badge_icon="⚖️"),
+            
+            # Achievement Hunter Achievements
+            Achievement(name="Trophy Hunter", description="Unlock 10 achievements", badge_icon="🏆"),
+            Achievement(name="Badge Collector", description="Unlock 25 achievements", badge_icon="🎖️"),
+            Achievement(name="Achievement Addict", description="Unlock 50 achievements", badge_icon="🏅"),
+            Achievement(name="Completion King", description="Unlock 75 achievements", badge_icon="👑"),
+            Achievement(name="Ultimate Champion", description="Unlock all achievements", badge_icon="🌟"),
+            
+            # Secret Achievements
+            Achievement(name="Explorer", description="Find hidden features", badge_icon="🗺️"),
+            Achievement(name="Secret Agent", description="Discover secret routes", badge_icon="🕵️"),
+            Achievement(name="Mystery Solver", description="Solve hidden puzzles", badge_icon="🔍"),
+            Achievement(name="Hidden Gem", description="Find rare easter eggs", badge_icon="💎"),
+            Achievement(name="Code Breaker", description="Unlock secret content", badge_icon="🔐")
         ]
         for achievement in achievements:
             db.session.add(achievement)
