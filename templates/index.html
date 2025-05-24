@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Mist{% endblock %}
+
+{% block body %}
+<div class="auth-container">
+    <div class="floating-petals"></div>
+    
+    <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
+        <div class="card auth-card shadow-lg">
+            <div class="card-body text-center p-5">
+                <div class="auth-icon mb-4">
+                    <i class="fas fa-heart pulse-heart"></i>
+                </div>
+                
+                <h1 class="auth-title mb-4">Welcome to Mist</h1>
+                <p class="auth-subtitle mb-5">A secret garden awaits...</p>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <div class="auth-question mb-4">
+                    <h3 class="question-text">Are you Siddharth's girlfriend?</h3>
+                </div>
+                
+                <form method="POST" action="{{ url_for('authenticate') }}" class="auth-form">
+                    <div class="d-grid gap-3">
+                        <button type="submit" name="answer" value="yes" class="btn btn-yes btn-lg">
+                            <i class="fas fa-heart me-2"></i>Yes, that's me! 💕
+                        </button>
+                        <button type="submit" name="answer" value="no" class="btn btn-no btn-lg">
+                            <i class="fas fa-times me-2"></i>No, I'm not
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="auth-footer mt-4">
+                    <small class="text-muted">Made with 💖 for someone special</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Create floating petals animation
+    document.addEventListener('DOMContentLoaded', function() {
+        createFloatingPetals();
+    });
+</script>
+{% endblock %}

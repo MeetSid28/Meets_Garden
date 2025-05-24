@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Secret Hug 🤗{% endblock %}
+
+{% block body %}
+<div class="hug-container">
+    <div class="floating-hearts"></div>
+    
+    <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
+        <div class="hug-card">
+            <div class="hug-animation">
+                <div class="hug-emoji">🤗</div>
+                <div class="hug-arms">
+                    <span class="arm left">🤲</span>
+                    <span class="arm right">🤲</span>
+                </div>
+            </div>
+            
+            <div class="hug-message">
+                <h1 class="hug-title">*Big Warm Hug*</h1>
+                <p class="hug-text">
+                    You found the secret hug route! 💕<br>
+                    Here's a virtual hug filled with all my love.<br>
+                    You mean the world to me, Meet! 🌍💖
+                </p>
+                
+                <div class="hug-quotes">
+                    <div class="quote active" data-quote="0">
+                        "In your arms, I found my home 🏠💕"
+                    </div>
+                    <div class="quote" data-quote="1">
+                        "Your smile is my favorite view 😊🌅"
+                    </div>
+                    <div class="quote" data-quote="2">
+                        "Every day with you is a beautiful adventure 🗺️✨"
+                    </div>
+                    <div class="quote" data-quote="3">
+                        "You're not just my girlfriend, you're my best friend 👫💝"
+                    </div>
+                </div>
+                
+                <div class="hug-actions mt-4">
+                    <a href="{{ url_for('garden') }}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-seedling me-2"></i>
+                        Back to Garden
+                    </a>
+                    <button class="btn btn-outline-pink btn-lg" onclick="sendVirtualHug()">
+                        <i class="fas fa-heart me-2"></i>
+                        Send Hug Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating love messages -->
+    <div class="love-messages">
+        <div class="love-msg">💕</div>
+        <div class="love-msg">🌹</div>
+        <div class="love-msg">💖</div>
+        <div class="love-msg">🌷</div>
+        <div class="love-msg">💝</div>
+        <div class="love-msg">🌺</div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create floating hearts animation
+        createFloatingHearts();
+        
+        // Rotate quotes
+        rotateQuotes();
+        
+        // Play hug sound
+        playHugSound();
+        
+        // Animate love messages
+        animateLoveMessages();
+    });
+    
+    function sendVirtualHug() {
+        // Create explosion of hearts
+        createHeartExplosion();
+        
+        // Show sweet message
+        const hugBtn = event.target;
+        const originalText = hugBtn.innerHTML;
+        hugBtn.innerHTML = '<i class="fas fa-check me-2"></i>Hug Sent! 💕';
+        hugBtn.disabled = true;
+        
+        setTimeout(() => {
+            hugBtn.innerHTML = originalText;
+            hugBtn.disabled = false;
+        }, 3000);
+        
+        // Play success sound
+        playSuccessSound();
+    }
+    
+    function rotateQuotes() {
+        const quotes = document.querySelectorAll('.quote');
+        let currentQuote = 0;
+        
+        setInterval(() => {
+            quotes[currentQuote].classList.remove('active');
+            currentQuote = (currentQuote + 1) % quotes.length;
+            quotes[currentQuote].classList.add('active');
+        }, 4000);
+    }
+    
+    function animateLoveMessages() {
+        const messages = document.querySelectorAll('.love-msg');
+        messages.forEach((msg, index) => {
+            msg.style.animationDelay = `${index * 0.5}s`;
+        });
+    }
+</script>
+{% endblock %}

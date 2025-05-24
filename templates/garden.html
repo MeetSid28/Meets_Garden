@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+
+{% block title %}Your Magical Garden{% endblock %}
+
+{% block body %}
+<div class="garden-container">
+    <!-- Navigation Header -->
+    <nav class="navbar navbar-expand-lg garden-nav">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-seedling me-2"></i>
+                Mist Garden
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle stats-display" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-coins me-1"></i>
+                        {{ stats.total_flower_bucks or 0 }} Flower Bucks
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><span class="dropdown-item-text">🔥 Streak: {{ stats.current_streak or 0 }} days</span></li>
+                        <li><span class="dropdown-item-text">✅ Tasks: {{ stats.total_tasks_completed or 0 }}</span></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('hug') }}">🤗 Secret Hug</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'info' if category == 'info' else 'warning' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="row">
+            <!-- Left Column: Tasks -->
+            <div class="col-lg-8">
+                <!-- Add Task Form -->
+                <div class="card garden-card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-plus-circle me-2"></i>
+                            Plant a New Task
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('add_task') }}">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" name="title" placeholder="What needs to bloom today?" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <select class="form-select" name="flower_type">
+                                            <option value="rose">🌹 Rose Task</option>
+                                            <option value="tulip">🌷 Tulip Task</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary w-100">
+                                        <i class="fas fa-seedling"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <textarea class="form-control" name="description" rows="2" placeholder="Add some loving details..."></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Tasks List -->
+                <div class="tasks-container">
+                    {% if tasks %}
+                        {% for task in tasks %}
+                            <div class="card task-card mb-3 {{ 'completed' if task.completed else '' }}" data-task-id="{{ task.id }}">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start">
+                                        <div class="task-icon me-3">
+                                            {% if task.flower_type == 'rose' %}
+                                                🌹
+                                            {% else %}
+                                                🌷
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="task-content flex-grow-1">
+                                            <h6 class="task-title {{ 'completed-task' if task.completed else '' }}">
+                                                {{ task.title }}
+                                            </h6>
+                                            {% if task.description %}
+                                                <p class="task-description">{{ task.description }}</p>
+                                            {% endif %}
+                                            <small class="task-meta">
+                                                <i class="fas fa-coins me-1"></i>{{ task.flower_bucks }} Flower Bucks
+                                                {% if task.completed %}
+                                                    <span class="ms-3 text-success">
+                                                        <i class="fas fa-check me-1"></i>Completed {{ task.completed_at.strftime('%m/%d') }}
+                                                    </span>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                        
+                                        <div class="task-actions">
+                                            {% if not task.completed %}
+                                                <a href="{{ url_for('complete_task', task_id=task.id) }}" class="btn btn-success btn-sm complete-btn">
+                                                    <i class="fas fa-check"></i>
+                                                </a>
+                                            {% endif %}
+                                            <a href="{{ url_for('delete_task', task_id=task.id) }}" class="btn btn-outline-danger btn-sm">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-garden text-center py-5">
+                            <div class="empty-icon mb-3">🌱</div>
+                            <h5>Your garden is ready to grow!</h5>
+                            <p class="text-muted">Plant your first task above to start your magical journey.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right Column: Stats & Achievements -->
+            <div class="col-lg-4">
+                <!-- Garden Streak -->
+                <div class="card garden-card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-fire me-2"></i>
+                            Garden Streak
+                        </h6>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="streak-display">
+                            <span class="streak-number">{{ stats.current_streak or 0 }}</span>
+                            <span class="streak-label">days</span>
+                        </div>
+                        <div class="streak-flowers mt-3">
+                            {% if recent_logins %}
+                                {% for login in recent_logins[:5] %}
+                                    <span class="streak-flower">
+                                        {% if login.flower_grown == 'rose' %}🌹{% else %}🌷{% endif %}
+                                    </span>
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">Start your streak! 🌱</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Achievements -->
+                <div class="card garden-card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-trophy me-2"></i>
+                            Achievements
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        {% for achievement in achievements %}
+                            <div class="achievement-item {{ 'unlocked' if achievement.unlocked else 'locked' }}">
+                                <div class="achievement-icon">{{ achievement.badge_icon }}</div>
+                                <div class="achievement-info">
+                                    <h6 class="achievement-name">{{ achievement.name }}</h6>
+                                    <small class="achievement-desc">{{ achievement.description }}</small>
+                                    {% if achievement.unlocked %}
+                                        <div class="achievement-date">
+                                            <i class="fas fa-calendar me-1"></i>{{ achievement.unlocked_at.strftime('%m/%d/%Y') }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Love Corner -->
+                <div class="card garden-card love-corner">
+                    <div class="card-body text-center">
+                        <div class="love-message">
+                            <p class="love-quote">"Every flower blooms in its own time 🌸"</p>
+                            <small class="love-signature">- Your Secret Admirer</small>
+                        </div>
+                        <div class="love-input mt-3">
+                            <input type="text" id="loveInput" class="form-control" placeholder="Type something...">
+                            <small class="text-muted">Try typing 'love' 💕</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Completion Animation Container -->
+<div id="completionAnimation" class="completion-animation"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize garden interactions
+        initializeGarden();
+        
+        // Handle task completion with animation
+        document.querySelectorAll('.complete-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const taskCard = this.closest('.task-card');
+                triggerCompletionAnimation(taskCard);
+                
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 1000);
+            });
+        });
+        
+        // Love input easter egg
+        const loveInput = document.getElementById('loveInput');
+        if (loveInput) {
+            loveInput.addEventListener('input', function() {
+                if (this.value.toLowerCase().includes('love')) {
+                    triggerLoveAnimation();
+                    this.value = '';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

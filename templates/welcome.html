@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome Meet!{% endblock %}
+
+{% block body %}
+<div class="welcome-container">
+    <div class="falling-hearts"></div>
+    <div class="falling-petals"></div>
+    
+    <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
+        <div class="welcome-message-container">
+            <div class="welcome-card">
+                <div class="welcome-icon mb-4">
+                    🌹💖🌷
+                </div>
+                
+                <h1 class="welcome-title animate-fade-in">
+                    Welcome Meet,<br>
+                    <span class="welcome-subtitle">I was waiting for you</span>
+                </h1>
+                
+                <div class="welcome-flowers">
+                    <span class="flower">🌸</span>
+                    <span class="flower">🌺</span>
+                    <span class="flower">🌻</span>
+                    <span class="flower">🌷</span>
+                    <span class="flower">🌹</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="welcome-continue">
+        <p class="continue-text">Your magical garden awaits...</p>
+        <div class="spinner-border text-pink" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create welcome animations
+        createWelcomeAnimation();
+        
+        // Play welcome sound
+        playWelcomeSound();
+        
+        // Redirect to garden after animation
+        setTimeout(() => {
+            window.location.href = "{{ url_for('garden') }}";
+        }, 4000);
+    });
+</script>
+{% endblock %}
