@@ -3,15 +3,25 @@
 // Sweet messages from the creator
 const sweetMessages = [
     "The creator says you look gorgeous today 💖",
+    "The creator says I love you bubu 💗",
+    "The creator says I love you bubu 💗",
+    "The creator says I love you bubu 💗",
+    "The creator says I love you bubu 💗",
     "The creator says you're the most wonderful woman 🌹",
     "The creator says hi meri poplu 💕",
     "The creator says I love you bubu 💗",
+    "The creator says I love you bubu 💗",
     "The creator says he's blessed to have you in his life 🌸",
     "The creator says you're his lifeline 💝",
+    "The creator says I love you bubu 💗",
+    "The creator says I love you bubu 💗",
     "The creator says your smile lights up his world ✨",
     "The creator says you make every day magical 🦋",
+    "The creator says I love you bubu 💗",
+    "The creator says I love you bubu 💗",
     "The creator says you're his favorite person 💘",
     "The creator says you're absolutely perfect 🌺",
+    "The creator says I love you bubu 💗",
     "The creator says you're his heart and soul 💖",
     "The creator says you're his everything 🌷"
 ];
