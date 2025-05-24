@@ -354,24 +354,24 @@ function showSweetLoveMessage() {
     const message = messages[Math.floor(Math.random() * messages.length)];
     
     const messageElement = document.createElement('div');
-    messageElement.innerHTML = `
-        <div style="
-            position: fixed;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 25px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            z-index: 10001;
-            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
-            border: 2px solid white;
-            font-family: 'Dancing Script', cursive;
-        ">${message}</div>
+    messageElement.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-size: 1.3rem;
+        font-weight: bold;
+        z-index: 10001;
+        box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+        border: 2px solid white;
+        font-family: 'Dancing Script', cursive;
+        pointer-events: none;
     `;
+    messageElement.textContent = message;
     
     document.body.appendChild(messageElement);
     
