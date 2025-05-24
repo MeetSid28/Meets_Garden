@@ -860,7 +860,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 10px 30px rgba(255, 182, 193, 0.5);
     text-align: center;
     font-family: 'Dancing Script', cursive;
-    border: 3px solid white;
+    border: 2px solid white;
     backdrop-filter: blur(10px);
 }
 

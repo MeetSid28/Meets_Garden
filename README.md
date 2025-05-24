@@ -1,4 +1,4 @@
-# Mist - A Romantic Garden To-Do App 🌹
+# Meet's Garden - A Romantic To-Do App 🌹
 
 A beautiful Flask web application designed as a romantic gift for Meet, featuring a gamified floral to-do list with animations, achievements, and sweet messages.
 
@@ -11,27 +11,37 @@ A beautiful Flask web application designed as a romantic gift for Meet, featurin
 - **Sweet Messages**: Romantic messages appear every 30 seconds
 - **Love Easter Egg**: Type "love" for heart animations
 - **Secret Hug Page**: Hidden route for special messages
-- **Background Chimes**: Gentle musical chimes while using the app
+- **Day Streak Tracking**: Tracks consecutive daily visits automatically
 - **Animated Elements**: Growing flowers, bouncing buttons, falling petals
 
-## Setup Instructions for VS Code
+## How to Run Meet's Garden in VS Code
 
 ### Prerequisites
 - Python 3.8 or higher
-- VS Code with Python extension
+- VS Code (Download from: https://code.visualstudio.com/)
+- Python extension for VS Code
 
-### Step 1: Download and Extract
-1. Download the project files from Replit
-2. Extract to a folder on your computer
-3. Open the folder in VS Code
+### Step-by-Step Setup
 
-### Step 2: Create Virtual Environment
-Open VS Code terminal and run:
+#### 1. Download and Extract Project
+1. Download all project files from Replit (use the download button)
+2. Extract/unzip to a folder on your computer (e.g., `C:\MeetsGarden` or `~/MeetsGarden`)
+3. Open VS Code
+4. Go to File → Open Folder and select your project folder
+
+#### 2. Install Python Extension (if not already installed)
+1. In VS Code, click the Extensions icon (left sidebar)
+2. Search for "Python" 
+3. Install the Python extension by Microsoft
+
+#### 3. Create Virtual Environment
+1. Open VS Code terminal: View → Terminal (or Ctrl+`)
+2. Run this command:
 ```bash
 python -m venv venv
 ```
 
-### Step 3: Activate Virtual Environment
+#### 4. Activate Virtual Environment
 **Windows:**
 ```bash
 venv\Scripts\activate
@@ -41,18 +51,31 @@ venv\Scripts\activate
 ```bash
 source venv/bin/activate
 ```
+You should see `(venv)` at the start of your terminal line.
 
-### Step 4: Install Dependencies
+#### 5. Install Required Packages
 ```bash
 pip install -r mist_requirements.txt
 ```
 
-### Step 5: Run the Application
+#### 6. Run the Application
 ```bash
 python app.py
 ```
 
-The app will be available at: http://localhost:5000
+#### 7. Open in Browser
+Open your browser and go to: http://localhost:5000
+
+### Day Streak System Explained
+
+The day streak tracks consecutive daily visits:
+- **First Visit**: Streak starts at 1
+- **Next Day Visit**: Streak increases by 1  
+- **Same Day**: Streak stays the same
+- **Skip a Day**: Streak resets to 1
+- **View Streak**: Click the Flower Bucks dropdown in the garden
+
+The system automatically tracks when Meet visits each day and updates the streak accordingly.
 
 ## How to Use
 
