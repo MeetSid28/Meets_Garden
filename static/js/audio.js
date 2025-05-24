@@ -294,11 +294,45 @@ function playAmbientSound(duration = 5000) {
     }
 }
 
+// Background chime system
+let backgroundChimeInterval;
+
+// Start gentle background chimes
+function startBackgroundChimes() {
+    if (backgroundChimeInterval) return;
+    
+    backgroundChimeInterval = setInterval(() => {
+        if (isAudioEnabled && audioContext) {
+            playGentleChime();
+        }
+    }, 45000); // Every 45 seconds
+}
+
+// Stop background chimes
+function stopBackgroundChimes() {
+    if (backgroundChimeInterval) {
+        clearInterval(backgroundChimeInterval);
+        backgroundChimeInterval = null;
+    }
+}
+
+// Play gentle chime sound
+function playGentleChime() {
+    const chimeNotes = [
+        { frequency: 523, duration: 300 }, // C5
+        { frequency: 659, duration: 300 }, // E5
+        { frequency: 784, duration: 400 }  // G5
+    ];
+    
+    return createMelody(chimeNotes, 150);
+}
+
 // Initialize audio when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize with user interaction
     const initAudio = () => {
         initializeAudioSystem();
+        startBackgroundChimes(); // Start chimes after audio is initialized
         document.removeEventListener('click', initAudio);
         document.removeEventListener('keydown', initAudio);
     };

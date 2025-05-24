@@ -108,28 +108,19 @@ function createExplodingPetal(startX, startY, petalEmoji) {
     };
 }
 
-// Love animation (enhanced hearts floating up)
+// Love animation (gentle and sweet)
 function triggerLoveAnimation() {
-    const hearts = ['💖', '💕', '💗', '💓', '💝', '💘', '❤️', '🧡', '💛', '💚', '💙', '💜'];
+    const hearts = ['💖', '💕', '💗', '💓', '💝', '💘'];
     
-    // Create burst of hearts from center
-    createHeartBurst();
-    
-    // Create floating hearts from bottom
-    for (let i = 0; i < 20; i++) {
+    // Create gentle floating hearts
+    for (let i = 0; i < 8; i++) {
         setTimeout(() => {
-            createEnhancedFloatingHeart(hearts[i % hearts.length]);
-        }, i * 100);
+            createGentleFloatingHeart(hearts[i % hearts.length]);
+        }, i * 300);
     }
     
-    // Create spiral hearts
-    createSpiralHearts();
-    
-    // Show love message with enhanced animation
-    showEnhancedLoveMessage();
-    
-    // Add screen sparkle effect
-    createScreenSparkles();
+    // Show sweet love message
+    showSweetLoveMessage();
 }
 
 // Create floating heart
@@ -314,15 +305,50 @@ function createSpiralHearts() {
     }
 }
 
-// Enhanced love message
-function showEnhancedLoveMessage() {
+// Gentle floating heart
+function createGentleFloatingHeart(heartEmoji) {
+    const heart = document.createElement('div');
+    heart.textContent = heartEmoji;
+    heart.style.cssText = `
+        position: fixed;
+        left: ${Math.random() * window.innerWidth}px;
+        bottom: -50px;
+        font-size: 2rem;
+        pointer-events: none;
+        z-index: 9999;
+    `;
+    
+    document.body.appendChild(heart);
+    
+    heart.animate([
+        {
+            transform: 'translateY(0) scale(0)',
+            opacity: 0
+        },
+        {
+            transform: 'translateY(-100px) scale(1)',
+            opacity: 1,
+            offset: 0.2
+        },
+        {
+            transform: `translateY(-${window.innerHeight + 100}px) scale(0.8)`,
+            opacity: 0
+        }
+    ], {
+        duration: 4000,
+        easing: 'ease-out'
+    }).onfinish = () => heart.remove();
+}
+
+// Sweet love message
+function showSweetLoveMessage() {
     const messages = [
         "Love is in the air! 💕",
         "You found the love easter egg! 💖",
-        "Sending virtual hugs! 🤗",
-        "Hearts are floating for you! 💗",
         "The creator sends his love! 💝",
-        "You make his heart skip a beat! 💓"
+        "You make his heart happy! 💗",
+        "Sweet hearts for you! 💘",
+        "Love you so much! 💓"
     ];
     
     const message = messages[Math.floor(Math.random() * messages.length)];
@@ -331,18 +357,18 @@ function showEnhancedLoveMessage() {
     messageElement.innerHTML = `
         <div style="
             position: fixed;
-            top: 20%;
+            top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
             background: linear-gradient(135deg, #ffb6c1, #ffc0cb);
             color: white;
             padding: 1rem 2rem;
-            border-radius: 30px;
-            font-size: 1.5rem;
+            border-radius: 25px;
+            font-size: 1.3rem;
             font-weight: bold;
             z-index: 10001;
-            box-shadow: 0 10px 30px rgba(255, 182, 193, 0.6);
-            border: 3px solid white;
+            box-shadow: 0 8px 20px rgba(255, 182, 193, 0.4);
+            border: 2px solid white;
             font-family: 'Dancing Script', cursive;
         ">${message}</div>
     `;
@@ -352,25 +378,25 @@ function showEnhancedLoveMessage() {
     messageElement.animate([
         {
             opacity: 0,
-            transform: 'translate(-50%, -50%) scale(0.5) rotate(-10deg)'
+            transform: 'translate(-50%, -50%) scale(0.8)'
         },
         {
             opacity: 1,
-            transform: 'translate(-50%, -50%) scale(1.1) rotate(0deg)',
-            offset: 0.3
+            transform: 'translate(-50%, -50%) scale(1)',
+            offset: 0.2
         },
         {
             opacity: 1,
-            transform: 'translate(-50%, -50%) scale(1) rotate(0deg)',
-            offset: 0.7
+            transform: 'translate(-50%, -50%) scale(1)',
+            offset: 0.8
         },
         {
             opacity: 0,
-            transform: 'translate(-50%, -50%) scale(0.8) rotate(5deg)'
+            transform: 'translate(-50%, -50%) scale(0.9)'
         }
     ], {
-        duration: 3500,
-        easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+        duration: 3000,
+        easing: 'ease-in-out'
     }).onfinish = () => messageElement.remove();
 }
 
