@@ -845,12 +845,49 @@ h1, h2, h3, h4, h5, h6 {
     background: var(--light-pink);
 }
 
+/* Sweet Messages Styles */
+.sweet-message-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sweet-message {
+    background: linear-gradient(135deg, var(--primary-pink), var(--light-pink));
+    color: white;
+    padding: 1.5rem 3rem;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(255, 182, 193, 0.5);
+    text-align: center;
+    font-family: 'Dancing Script', cursive;
+    border: 3px solid white;
+    backdrop-filter: blur(10px);
+}
+
+.message-text {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.message-decoration {
+    font-size: 1.2rem;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+}
+
 /* Print Styles */
 @media print {
     .floating-petals,
     .falling-hearts,
     .falling-petals,
-    .floating-hearts {
+    .floating-hearts,
+    .sweet-message-container {
         display: none;
     }
     
