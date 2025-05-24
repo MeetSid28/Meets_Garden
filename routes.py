@@ -252,8 +252,14 @@ def complete_task(task_id):
     # Update user stats
     stats = UserStats.query.first()
     if not stats:
-        stats = UserStats()
+        stats = UserStats(total_flower_bucks=0, total_tasks_completed=0, current_streak=0)
         db.session.add(stats)
+    
+    # Initialize values if they are None
+    if stats.total_flower_bucks is None:
+        stats.total_flower_bucks = 0
+    if stats.total_tasks_completed is None:
+        stats.total_tasks_completed = 0
     
     stats.total_flower_bucks += task.flower_bucks
     stats.total_tasks_completed += 1

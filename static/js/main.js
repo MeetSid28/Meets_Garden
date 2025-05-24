@@ -63,6 +63,7 @@ function setupLoveEasterEgg() {
             
             if (value.includes('love')) {
                 triggerLoveAnimation();
+                showSweetLoveMessage(); // Show message in center
                 this.value = '';
                 playLoveSound();
             }
