@@ -53,42 +53,42 @@ function createFloatingMessage(message) {
         </div>
     `;
     
-    // Add styles
+    // Add styles - center the message
     messageElement.style.cssText = `
         position: fixed;
         top: 50%;
-        left: -100%;
-        width: 100%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         z-index: 10000;
         pointer-events: none;
-        transform: translateY(-50%);
+        opacity: 0;
     `;
     
     document.body.appendChild(messageElement);
     
-    // Animate message across screen
+    // Animate message - fade in, stay, fade out
     const animation = messageElement.animate([
         {
-            transform: 'translate(-100%, -50%) scale(0.8)',
-            opacity: 0
+            opacity: 0,
+            transform: 'translate(-50%, -50%) scale(0.5)'
         },
         {
-            transform: 'translate(0%, -50%) scale(1)',
             opacity: 1,
+            transform: 'translate(-50%, -50%) scale(1)',
             offset: 0.2
         },
         {
-            transform: 'translate(0%, -50%) scale(1)',
             opacity: 1,
+            transform: 'translate(-50%, -50%) scale(1)',
             offset: 0.8
         },
         {
-            transform: 'translate(100%, -50%) scale(0.8)',
-            opacity: 0
+            opacity: 0,
+            transform: 'translate(-50%, -50%) scale(0.5)'
         }
     ], {
-        duration: 4000,
-        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        duration: 5000,
+        easing: 'ease-in-out'
     });
     
     // Remove element after animation
