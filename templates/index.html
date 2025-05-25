@@ -8,13 +8,13 @@
     
     <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
         <div class="card auth-card shadow-lg">
-            <div class="card-body text-center p-5">
+            <div class="card-body text-center p-4 p-md-5">
                 <div class="auth-icon mb-4">
                     <i class="fas fa-heart pulse-heart"></i>
                 </div>
                 
                 <h1 class="auth-title mb-4">Welcome to Meet's Garden</h1>
-                <p class="auth-subtitle mb-5">A secret garden awaits...</p>
+                <p class="auth-subtitle mb-4">A secret garden awaits...</p>
                 
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
@@ -34,10 +34,10 @@
                 <form method="POST" action="{{ url_for('main.authenticate') }}" class="auth-form">
                     <input type="hidden" name="answer" id="answerInput">
                     <div class="d-grid gap-3">
-                        <button type="button" onclick="submitForm('yes')" class="btn btn-yes btn-lg">
+                        <button type="button" onclick="submitForm('yes')" class="btn btn-yes btn-lg auth-btn" ontouchstart="this.classList.add('btn-touch')" ontouchend="this.classList.remove('btn-touch')">
                             <i class="fas fa-heart me-2"></i>Yes, that's me! 💕
                         </button>
-                        <button type="button" onclick="submitForm('no')" class="btn btn-no btn-lg">
+                        <button type="button" onclick="submitForm('no')" class="btn btn-no btn-lg auth-btn" ontouchstart="this.classList.add('btn-touch')" ontouchend="this.classList.remove('btn-touch')">
                             <i class="fas fa-times me-2"></i>No, I'm not
                         </button>
                     </div>
@@ -58,8 +58,52 @@
     });
     
     function submitForm(answer) {
+        // Add touch feedback
+        const btn = event.target.closest('.auth-btn');
+        if (btn) {
+            btn.classList.add('btn-touch');
+            setTimeout(() => btn.classList.remove('btn-touch'), 200);
+        }
+        
+        // Submit form
         document.getElementById('answerInput').value = answer;
         document.querySelector('.auth-form').submit();
     }
 </script>
+
+<style>
+    /* Mobile-specific styles */
+    .auth-btn {
+        min-height: 54px; /* Minimum touch target size */
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+        touch-action: manipulation; /* Optimize touch actions */
+        user-select: none; /* Prevent text selection */
+    }
+    
+    .btn-touch {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+    
+    @media (max-width: 576px) {
+        .auth-card {
+            margin: 1rem;
+            width: calc(100% - 2rem);
+        }
+        
+        .auth-title {
+            font-size: 2rem;
+        }
+        
+        .question-text {
+            font-size: 1.5rem;
+        }
+        
+        .auth-btn {
+            font-size: 1rem;
+        }
+    }
+</style>
 {% endblock %}
