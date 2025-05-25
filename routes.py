@@ -1,21 +1,27 @@
-from flask import render_template, request, redirect, url_for, session, jsonify, flash
-from app import app, db
+from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify, flash
+from extensions import db
 from models import Task, Achievement, UserStats, DailyLogin
 from datetime import datetime, date
 import json
 
-@app.route('/')
+# Create blueprint instead of using app directly
+bp = Blueprint('main', __name__)
+
+@bp.route('/')
 def index():
     """Initial authentication page"""
     if session.get('authenticated'):
-        return redirect(url_for('garden'))
+        return redirect(url_for('main.garden'))
     return render_template('index.html')
 
-@app.route('/authenticate', methods=['POST'])
+@bp.route('/authenticate', methods=['POST'])
 def authenticate():
     """Handle the girlfriend authentication"""
     answer = request.form.get('answer')
+    print(f"Debug - Received answer: {answer}")  # Debug log
+    print(f"Debug - Form data: {request.form}")  # Debug log
     if answer == 'yes':
+        print("Debug - Answer is yes, setting session")  # Debug log
         session['authenticated'] = True
         
         # Update user stats
@@ -42,23 +48,25 @@ def authenticate():
             db.session.add(login)
         
         db.session.commit()
-        return redirect(url_for('welcome'))
+        print("Debug - Redirecting to welcome")  # Debug log
+        return redirect(url_for('main.welcome'))
     else:
+        print(f"Debug - Answer is not yes, showing error")  # Debug log
         flash('This garden is specially made for Meet! 🌹', 'error')
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
 
-@app.route('/welcome')
+@bp.route('/welcome')
 def welcome():
     """Welcome page with animations"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     return render_template('welcome.html')
 
-@app.route('/garden')
+@bp.route('/garden')
 def garden():
     """Main garden/todo page"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     # Initialize default tasks if none exist
     if Task.query.count() == 0:
@@ -221,11 +229,11 @@ def garden():
     
     return render_template('garden.html', tasks=tasks, stats=stats, achievements=achievements, recent_logins=recent_logins)
 
-@app.route('/add_task', methods=['POST'])
+@bp.route('/add_task', methods=['POST'])
 def add_task():
     """Add a new task"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     title = request.form.get('title')
     description = request.form.get('description', '')
@@ -237,13 +245,13 @@ def add_task():
         db.session.commit()
         flash('New task planted in your garden! 🌱', 'success')
     
-    return redirect(url_for('garden'))
+    return redirect(url_for('main.garden'))
 
-@app.route('/complete_task/<int:task_id>')
+@bp.route('/complete_task/<int:task_id>')
 def complete_task(task_id):
     """Mark a task as completed"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     task = Task.query.get_or_404(task_id)
     task.completed = True
@@ -270,33 +278,33 @@ def complete_task(task_id):
     db.session.commit()
     flash(f'Task completed! Earned {task.flower_bucks} Flower Bucks 🌸', 'success')
     
-    return redirect(url_for('garden'))
+    return redirect(url_for('main.garden'))
 
-@app.route('/delete_task/<int:task_id>')
+@bp.route('/delete_task/<int:task_id>')
 def delete_task(task_id):
     """Delete a task"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     task = Task.query.get_or_404(task_id)
     db.session.delete(task)
     db.session.commit()
     flash('Task removed from garden 🍃', 'info')
     
-    return redirect(url_for('garden'))
+    return redirect(url_for('main.garden'))
 
-@app.route('/hug')
+@bp.route('/hug')
 def hug():
     """Secret hug route"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     return render_template('hug.html')
 
-@app.route('/reset_garden')
+@bp.route('/reset_garden')
 def reset_garden():
     """Reset the entire garden (for testing)"""
     if not session.get('authenticated'):
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     
     # Clear session
     session.clear()
@@ -306,7 +314,7 @@ def reset_garden():
     db.create_all()
     
     flash('Garden has been reset! 🌱', 'info')
-    return redirect(url_for('index'))
+    return redirect(url_for('main.index'))
 
 def check_achievements(stats):
     """Check and unlock achievements"""

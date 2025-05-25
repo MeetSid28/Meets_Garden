@@ -1,8 +1,11 @@
-from app import db
+from extensions import db
 from datetime import datetime, date
 from sqlalchemy import func
 
 class Task(db.Model):
+    __tablename__ = 'tasks'
+    __table_args__ = {'extend_existing': True}
+    
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
@@ -13,6 +16,9 @@ class Task(db.Model):
     completed_at = db.Column(db.DateTime)
 
 class Achievement(db.Model):
+    __tablename__ = 'achievements'
+    __table_args__ = {'extend_existing': True}
+    
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(200))
@@ -21,6 +27,9 @@ class Achievement(db.Model):
     unlocked_at = db.Column(db.DateTime)
 
 class UserStats(db.Model):
+    __tablename__ = 'user_stats'
+    __table_args__ = {'extend_existing': True}
+    
     id = db.Column(db.Integer, primary_key=True)
     total_flower_bucks = db.Column(db.Integer, default=0)
     current_streak = db.Column(db.Integer, default=0)
@@ -30,6 +39,9 @@ class UserStats(db.Model):
     authenticated = db.Column(db.Boolean, default=False)
 
 class DailyLogin(db.Model):
+    __tablename__ = 'daily_logins'
+    __table_args__ = {'extend_existing': True}
+    
     id = db.Column(db.Integer, primary_key=True)
     login_date = db.Column(db.Date, default=date.today)
     flower_grown = db.Column(db.String(50))  # Type of flower that grew

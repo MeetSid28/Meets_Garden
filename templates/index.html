@@ -31,12 +31,13 @@
                     <h3 class="question-text">Are you Siddharth's girlfriend?</h3>
                 </div>
                 
-                <form method="POST" action="{{ url_for('authenticate') }}" class="auth-form">
+                <form method="POST" action="{{ url_for('main.authenticate') }}" class="auth-form">
+                    <input type="hidden" name="answer" id="answerInput">
                     <div class="d-grid gap-3">
-                        <button type="submit" name="answer" value="yes" class="btn btn-yes btn-lg">
+                        <button type="button" onclick="submitForm('yes')" class="btn btn-yes btn-lg">
                             <i class="fas fa-heart me-2"></i>Yes, that's me! 💕
                         </button>
-                        <button type="submit" name="answer" value="no" class="btn btn-no btn-lg">
+                        <button type="button" onclick="submitForm('no')" class="btn btn-no btn-lg">
                             <i class="fas fa-times me-2"></i>No, I'm not
                         </button>
                     </div>
@@ -55,5 +56,10 @@
     document.addEventListener('DOMContentLoaded', function() {
         createFloatingPetals();
     });
+    
+    function submitForm(answer) {
+        document.getElementById('answerInput').value = answer;
+        document.querySelector('.auth-form').submit();
+    }
 </script>
 {% endblock %}

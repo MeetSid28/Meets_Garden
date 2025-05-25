@@ -1,36 +1,35 @@
 import os
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from werkzeug.middleware.proxy_fix import ProxyFix
+from extensions import db, init_db
+from routes import bp as main_blueprint
 
-class Base(DeclarativeBase):
-    pass
+def create_app():
+    # Create the app
+    app = Flask(__name__, 
+        static_folder='static',
+        static_url_path='/static',
+        template_folder='templates'
+    )
+    app.secret_key = os.environ.get("SESSION_SECRET", "mist-secret-key-for-meet")
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-db = SQLAlchemy(model_class=Base)
+    # Configure the database
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mist.db"
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_recycle": 300,
+        "pool_pre_ping": True,
+    }
 
-# Create the app
-app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET", "mist-secret-key-for-meet")
-app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
-
-# Configure the database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mist.db"
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    "pool_recycle": 300,
-    "pool_pre_ping": True,
-}
-
-# Initialize the app with the extension
-db.init_app(app)
-
-with app.app_context():
-    # Import models here so their tables will be created
-    import models  # noqa: F401
-    db.create_all()
+    # Initialize extensions
+    init_db(app)
     
-    # Import and register routes
-    import routes  # noqa: F401
+    # Register blueprints
+    app.register_blueprint(main_blueprint)
+    
+    return app
+
+app = create_app()
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

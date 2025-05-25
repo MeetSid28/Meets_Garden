@@ -1,55 +1,136 @@
 {% extends "base.html" %}
 
-{% block title %}Meet's Garden{% endblock %}
+{% block title %}Welcome to Your Garden{% endblock %}
 
 {% block body %}
 <div class="welcome-container">
-    <div class="falling-hearts"></div>
-    <div class="falling-petals"></div>
-    
-    <div class="container-fluid h-100 d-flex align-items-center justify-content-center">
-        <div class="welcome-message-container">
-            <div class="welcome-card">
-                <div class="welcome-icon mb-4">
-                    🌹💖🌷
-                </div>
-                
-                <h1 class="welcome-title animate-fade-in">
-                    Welcome Meet,<br>
-                    <span class="welcome-subtitle">I was waiting for you</span>
-                </h1>
-                
-                <div class="welcome-flowers">
-                    <span class="flower">🌸</span>
-                    <span class="flower">🌺</span>
-                    <span class="flower">🌻</span>
-                    <span class="flower">🌷</span>
-                    <span class="flower">🌹</span>
-                </div>
+    <div class="welcome-content text-center">
+        <div class="welcome-animation">
+            <div class="flower-garden">
+                <!-- Animated flowers will be added by JavaScript -->
             </div>
         </div>
-    </div>
-    
-    <div class="welcome-continue">
-        <p class="continue-text">Your magical garden awaits...</p>
-        <div class="spinner-border text-pink" role="status">
-            <span class="visually-hidden">Loading...</span>
+        
+        <div class="welcome-messages">
+            <div class="message active" data-message="0">
+                <h1 class="welcome-title">Welcome to Your Garden!</h1>
+                <p class="welcome-subtitle">I've been waiting for you... 💕</p>
+            </div>
+            <div class="message" data-message="1">
+                <h2 class="sweet-message">Every flower here blooms with love</h2>
+                <p class="message-subtitle">Just like my heart for you 🌸</p>
+            </div>
+            <div class="message" data-message="2">
+                <h2 class="sweet-message">Ready to grow something beautiful together?</h2>
+                <p class="message-subtitle">Our garden of memories awaits 🌺</p>
+            </div>
+            <div class="message" data-message="3">
+                <h2 class="sweet-message">Let's make every day special</h2>
+                <p class="message-subtitle">Just like you make mine 💝</p>
+            </div>
+        </div>
+        
+        <div class="welcome-buttons">
+            <a href="{{ url_for('main.garden') }}" class="btn btn-primary btn-lg">
+                Enter Your Garden 🌸
+            </a>
         </div>
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Create welcome animations
+        // Rotate welcome messages
+        const messages = document.querySelectorAll('.message');
+        let currentMessage = 0;
+        
+        function showNextMessage() {
+            messages[currentMessage].classList.remove('active');
+            currentMessage = (currentMessage + 1) % messages.length;
+            messages[currentMessage].classList.add('active');
+        }
+        
+        // Show messages every 2 seconds
+        setInterval(showNextMessage, 2000);
+        
+        // Create welcome animation with flowers
         createWelcomeAnimation();
-        
-        // Play welcome sound
-        playWelcomeSound();
-        
-        // Redirect to garden after animation
-        setTimeout(() => {
-            window.location.href = "{{ url_for('garden') }}";
-        }, 4000);
     });
 </script>
+
+<style>
+.welcome-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-content {
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-messages {
+    margin: 2rem 0;
+    min-height: 200px;
+    position: relative;
+}
+
+.message {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+}
+
+.message.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.welcome-title {
+    font-size: 3rem;
+    color: #e91e63;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.sweet-message {
+    font-size: 2.5rem;
+    color: #c2185b;
+    margin-bottom: 1rem;
+}
+
+.welcome-subtitle, .message-subtitle {
+    font-size: 1.5rem;
+    color: #880e4f;
+    margin-bottom: 2rem;
+}
+
+.welcome-buttons {
+    margin-top: 2rem;
+}
+
+.welcome-buttons .btn {
+    font-size: 1.5rem;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #ff4081, #f50057);
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.welcome-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.welcome-buttons .btn:active {
+    transform: translateY(1px);
+}
+</style>
 {% endblock %}
