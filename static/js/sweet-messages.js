@@ -4,9 +4,6 @@
 const sweetMessages = [
     "The creator says you look gorgeous today 💖",
     "The creator says I love you bubu 💗",
-    "The creator says I love you bubu 💗",
-    "The creator says I love you bubu 💗",
-    "The creator says I love you bubu 💗",
     "The creator says you're the most wonderful woman 🌹",
     "The creator says hi meri poplu 💕",
     "The creator says I love you bubu 💗",
