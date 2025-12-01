@@ -54,14 +54,13 @@ source venv/bin/activate
 You should see `(venv)` at the start of your terminal line.
 
 #### 5. Install Required Packages
-```bash
+
 pip install -r mist_requirements.txt
-```
 
 #### 6. Run the Application
-```bash
+
 python app.py
-```
+
 
 #### 7. Open in Browser
 Open your browser and go to: http://localhost:5000
@@ -138,3 +137,10 @@ mist/
 - **Responsive Design** works on mobile and desktop
 
 Made with 💖 for Meet by Siddharth
+
+---
+
+## Recent fixes
+
+- Fix: hardened `/authenticate` to handle DB write errors and avoid server crashes (rollbacks + graceful redirect / flash). ✅
+- Fix: client-side `submitForm` now accepts the event param and provides a fetch fallback to prevent JS errors from stopping submission. ✅
