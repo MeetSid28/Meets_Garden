@@ -137,3 +137,10 @@ mist/
 - **Responsive Design** works on mobile and desktop
 
 Made with 💖 for Meet by Siddharth
+
+---
+
+## Recent fixes
+
+- Fix: hardened `/authenticate` to handle DB write errors and avoid server crashes (rollbacks + graceful redirect / flash). ✅
+- Fix: client-side `submitForm` now accepts the event param and provides a fetch fallback to prevent JS errors from stopping submission. ✅

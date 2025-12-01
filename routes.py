@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify, flash
+from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify, flash, current_app
 from extensions import db
 from models import Task, Achievement, UserStats, DailyLogin
 from datetime import datetime, date
@@ -23,33 +23,50 @@ def authenticate():
     if answer == 'yes':
         print("Debug - Answer is yes, setting session")  # Debug log
         session['authenticated'] = True
-        
-        # Update user stats
-        stats = UserStats.query.first()
-        if not stats:
-            stats = UserStats(authenticated=True)
-            db.session.add(stats)
-        else:
-            stats.authenticated = True
-        
-        # Handle daily login
-        today = date.today()
-        if not stats.last_login or stats.last_login != today:
-            # Check if consecutive day
-            if stats.last_login and (today - stats.last_login).days == 1:
-                stats.current_streak += 1
-            elif not stats.last_login or (today - stats.last_login).days > 1:
-                stats.current_streak = 1
-            
-            stats.last_login = today
-            
-            # Add daily login record
-            login = DailyLogin(login_date=today, flower_grown='rose' if stats.current_streak % 2 == 1 else 'tulip')
-            db.session.add(login)
-        
-        db.session.commit()
-        print("Debug - Redirecting to welcome")  # Debug log
-        return redirect(url_for('main.welcome'))
+        # Update user stats and handle DB writes — do this safely so the server
+        # doesn't crash if the DB isn't writable (e.g. read-only / serverless env).
+        try:
+            # Update user stats
+            stats = UserStats.query.first()
+            if not stats:
+                stats = UserStats(authenticated=True)
+                db.session.add(stats)
+            else:
+                stats.authenticated = True
+
+            # Handle daily login
+            today = date.today()
+
+            # If last_login contains a datetime object convert to date for safe math
+            if stats.last_login and isinstance(stats.last_login, datetime):
+                stats_last = stats.last_login.date()
+            else:
+                stats_last = stats.last_login
+
+            if not stats_last or stats_last != today:
+                # Check if consecutive day (safe because stats_last is a date or None)
+                if stats_last and (today - stats_last).days == 1:
+                    stats.current_streak += 1
+                else:
+                    # either first login or a break in the streak
+                    stats.current_streak = 1
+
+                stats.last_login = today
+
+                # Add daily login record
+                login = DailyLogin(login_date=today, flower_grown='rose' if stats.current_streak % 2 == 1 else 'tulip')
+                db.session.add(login)
+
+            db.session.commit()
+            print("Debug - Redirecting to welcome")  # Debug log
+            return redirect(url_for('main.welcome'))
+        except Exception as exc:
+            # Failure to write to DB must not crash the entire app — rollback and continue
+            db.session.rollback()
+            current_app.logger.exception('Failed to update UserStats on authenticate')
+            # Still keep the user authenticated in session; show a non-fatal message
+            flash('You are authenticated — there was a temporary server issue saving your stats. ❤️', 'warning')
+            return redirect(url_for('main.welcome'))
     else:
         print(f"Debug - Answer is not yes, showing error")  # Debug log
         flash('This garden is specially made for Meet! 🌹', 'error')

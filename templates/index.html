@@ -34,10 +34,10 @@
                 <form method="POST" action="{{ url_for('main.authenticate') }}" class="auth-form">
                     <input type="hidden" name="answer" id="answerInput">
                     <div class="d-grid gap-3">
-                        <button type="button" onclick="submitForm('yes')" class="btn btn-yes btn-lg auth-btn" ontouchstart="this.classList.add('btn-touch')" ontouchend="this.classList.remove('btn-touch')">
+                        <button type="button" onclick="submitForm(event, 'yes')" class="btn btn-yes btn-lg auth-btn" ontouchstart="this.classList.add('btn-touch')" ontouchend="this.classList.remove('btn-touch')">
                             <i class="fas fa-heart me-2"></i>Yes, that's me! 💕
                         </button>
-                        <button type="button" onclick="submitForm('no')" class="btn btn-no btn-lg auth-btn" ontouchstart="this.classList.add('btn-touch')" ontouchend="this.classList.remove('btn-touch')">
+                        <button type="button" onclick="submitForm(event, 'no')" class="btn btn-no btn-lg auth-btn" ontouchstart="this.classList.add('btn-touch')" ontouchend="this.classList.remove('btn-touch')">
                             <i class="fas fa-times me-2"></i>No, I'm not
                         </button>
                     </div>
@@ -57,17 +57,38 @@
         createFloatingPetals();
     });
     
-    function submitForm(answer) {
+    function submitForm(evt, answer) {
+        // tolerate missing event in older browsers - accept window.event as fallback
+        evt = evt || (typeof window !== 'undefined' && window.event);
         // Add touch feedback
-        const btn = event.target.closest('.auth-btn');
+        const btn = evt && evt.target ? evt.target.closest('.auth-btn') : null;
         if (btn) {
             btn.classList.add('btn-touch');
             setTimeout(() => btn.classList.remove('btn-touch'), 200);
         }
         
         // Submit form
-        document.getElementById('answerInput').value = answer;
-        document.querySelector('.auth-form').submit();
+        // Make sure we have the form and hidden input before submitting
+        const hidden = document.getElementById('answerInput');
+        const form = document.querySelector('.auth-form');
+        if (!hidden || !form) {
+            // If for any reason form elements are missing, log and stop (graceful)
+            console.warn('Auth form missing; cannot submit.');
+            return;
+        }
+
+        hidden.value = answer;
+        try {
+            form.submit();
+        } catch (err) {
+            // best-effort fallback: try to POST using fetch (prevents silent client crash)
+            console.warn('Form submit failed, attempting fetch fallback', err);
+            fetch(form.action || window.location.href, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `answer=${encodeURIComponent(answer)}`
+            }).catch(e => console.error('Fallback submit failed', e));
+        }
     }
 </script>
 
