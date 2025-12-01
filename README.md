@@ -48,9 +48,9 @@ venv\Scripts\activate
 ```
 
 **Mac/Linux:**
-
+```bash
 source venv/bin/activate
-
+```
 You should see `(venv)` at the start of your terminal line.
 
 #### 5. Install Required Packages
