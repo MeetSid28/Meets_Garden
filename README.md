@@ -48,20 +48,19 @@ venv\Scripts\activate
 ```
 
 **Mac/Linux:**
-```bash
+
 source venv/bin/activate
-```
+
 You should see `(venv)` at the start of your terminal line.
 
 #### 5. Install Required Packages
-```bash
+
 pip install -r mist_requirements.txt
-```
 
 #### 6. Run the Application
-```bash
+
 python app.py
-```
+
 
 #### 7. Open in Browser
 Open your browser and go to: http://localhost:5000
